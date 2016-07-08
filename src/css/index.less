@@ -1,0 +1,51 @@
+html, body, .contents {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.commentView {
+  width: 100%;
+  height: 100%;
+}
+
+.comments {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.comment {
+  list-style-type: none;
+  width: calc(~"100% - 10px");
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+  img {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.comment_body {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment_user_info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: small;
+}
+
+.new {
+  background-color: #d5e2ff;
+}
+
+.transition(@target: all, @ms: 500ms) {
+  transition-property: @target;
+  transition-duration: @ms;
+  transition-timing-function: cubic-bezier(0.465, 0.183, 0.153, 0.946);
+}
