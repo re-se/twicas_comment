@@ -9,7 +9,7 @@ window.onload = () ->
   path = app.getPath('temp') + "com.txt"
   Comments = React.createClass
     render: () ->
-      console.log @props.comments[0]
+      # console.log @props.comments[0]
       if @props.newComments.length > 0 and @props.comments.length > 0
         n = document.getElementById "notification"
         n.play()
@@ -48,9 +48,24 @@ window.onload = () ->
       newComments: []
       latest: null
       sound: "pocopoco"
+      mic: false
+    setMic: (cond) ->
+      return if cond is @state.mic
+      onoff = if cond then "on" else "off"
+      exec "osascript ./dist/resource/script/mic_#{onoff}.applescript", (e, res) =>
+        @setState mic: cond
     componentDidMount: ->
       user = "seseri7th"
       user = "dannti3"
+      @setMic(@state.mic)
+      _onkeydown = (e) =>
+        if e.keyCode is 77
+          @setMic true
+      _onkeyup = (e) =>
+        if e.keyCode is 77
+          @setMic false
+      window.addEventListener("keydown", _onkeydown)
+      window.addEventListener("keyup", _onkeyup)
       req = =>
         url = "http://api.twitcasting.tv/api/commentlist?type=json&user=#{user}"
         url += "&since=#{@state.latest}" if @state.latest?
@@ -66,8 +81,10 @@ window.onload = () ->
       # setTimeout req, 5000
       setInterval req, 5000
     render: () ->
+      mic = if @state.mic then "microphone" else "microphone-slash"
       return (
-        <div className="commentView">
+        <div className="contents">
+        <i className="fa fa-2x fa-#{mic} mic" onClick={=>@setMic(!@state.mic)} />
         <Audios sound={@state.sound}/>
           <Comments comments={@state.comments}, newComments={@state.newComments}/>
         </div>
